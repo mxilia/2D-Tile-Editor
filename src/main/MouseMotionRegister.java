@@ -16,7 +16,6 @@ public class MouseMotionRegister extends MouseMotionAdapter {
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-
         if(p.map.currentFileDirectory.isEmpty()) return;
         if(x+p.map.userX>=0 && y+p.map.userY>=0 && x+p.map.userX<p.map.mapWidth && y+p.map.userY<p.map.mapHeight && !p.resp.isObject){
             p.map.tileX = (x+p.map.userX)/p.map.tileSize;
@@ -24,8 +23,7 @@ public class MouseMotionRegister extends MouseMotionAdapter {
             p.map.onTile = true;
         }
         else p.map.onTile = false;
-        if(p.resp.isObject) p.map.onObject = true;
-        else p.map.onObject = false;
+        p.map.onObject = p.resp.isObject;
         p.map.objX = x+p.map.userX;
         p.map.objY = y+p.map.userY;
         p.repaint();

@@ -21,28 +21,8 @@ public class ResourceSelector extends UserInterface {
     }
 
     public void searchItem(String str) {
-        if(p.resp.isObject){
-            if(p.om.img.isEmpty()) return;
-            int l=0, r=p.om.imgCount-1;
-            while(l<r){
-                int mid = (l+r)>>1;
-                if(p.om.fileName.get(mid).getFirst().compareTo(str)>=0) r = mid;
-                else l = mid+1;
-            }
-            if(p.om.fileName.get(l).getFirst().compareTo(str)==0) searchedItem = p.om.fileName.get(l).getSecond();
-            else searchedItem = -1;
-        }
-        else {
-            if(p.tm.img.isEmpty()) return;
-            int l=0, r=p.tm.imgCount-1;
-            while(l<r){
-                int mid = (l+r)>>1;
-                if(p.tm.fileName.get(mid).getFirst().compareTo(str)>=0) r = mid;
-                else l = mid+1;
-            }
-            if(p.tm.fileName.get(l).getFirst().compareTo(str)==0) searchedItem = p.tm.fileName.get(l).getSecond();
-            else searchedItem = -1;
-        }
+        if(p.resp.isObject) searchedItem = p.om.map.getOrDefault(str, -1);
+        else searchedItem = p.tm.map.getOrDefault(str, -1);
     }
 
     public void draw(Graphics2D g2) {
@@ -61,7 +41,7 @@ public class ResourceSelector extends UserInterface {
                 }
             }
             else {
-                if(searchedItem == -1) return;
+                if(searchedItem<0) return;
                 g2.drawImage(p.om.img.get(searchedItem), x+32, y+37, itemLength-35, itemLength-35, null);
                 UtilFunc.drawBorder(g2, x+15, y+29, width-29, itemLength-10, 1, 15, Color.white);
                 g2.drawString(p.om.displayName.get(searchedItem), x+32, y+115);
@@ -72,7 +52,7 @@ public class ResourceSelector extends UserInterface {
             if(p.tm.img.isEmpty()) return;
             if(!searching){
                 int start = Math.max(0, p.resp.tileUserY /itemLength-1);
-                int end = Math.min(p.tm.imgCount-1, p.resp.tileUserY /itemLength+numDisplay);
+                int end = Math.min(p.tm.imgCount-1, p.resp.tileUserY/itemLength+numDisplay);
                 for(int i=start;i<=end;i++){
                     g2.drawImage(p.tm.img.get(i), x+32, y+i*itemLength+37-p.resp.tileUserY, itemLength-35, itemLength-35, null);
                     UtilFunc.drawBorder(g2, x+15, y+i*itemLength+29-p.resp.tileUserY, width-29, itemLength-10, 1, 15, Color.white);
@@ -81,7 +61,7 @@ public class ResourceSelector extends UserInterface {
                 }
             }
             else {
-                if(searchedItem == -1) return;
+                if(searchedItem<0) return;
                 g2.drawImage(p.tm.img.get(searchedItem), x+32, y+37, itemLength-35, itemLength-35, null);
                 UtilFunc.drawBorder(g2, x+15, y+29, width-29, itemLength-10, 1, 15, Color.white);
                 g2.drawString(p.tm.displayName.get(searchedItem), x+32, y+115);

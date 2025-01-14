@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class Manager {
     Panel p;
@@ -25,7 +22,7 @@ public abstract class Manager {
 
     public ArrayList<BufferedImage> img;
     public ArrayList<String> displayName;
-    public ArrayList<Pair<String, Integer>> fileName;
+    public HashMap<String, Integer> map = new HashMap<>();
     public int imgCount;
     final public int editorWidth, editorHeight;
 
@@ -40,17 +37,15 @@ public abstract class Manager {
     }
 
     public void addImgRT(BufferedImage newImg, String str) {
-        this.imgCount++;
         this.img.add(newImg);
-        this.displayName.add(UtilFunc.filterStr(str));
-        this.fileName.add(new Pair<>(str, this.imgCount));
-        this.fileName.sort(Comparator.comparing(Pair::getFirst));
+        this.displayName.add(str);
+        this.map.put(str, this.imgCount);
+        this.imgCount++;
     }
 
     public void loadImg() {
         img = new ArrayList<>();
         displayName = new ArrayList<>();
-        fileName = new ArrayList<>();
         File tileFolder = new File(imgDirectory);
         File[] files = tileFolder.listFiles();
         if(files != null){
@@ -69,14 +64,13 @@ public abstract class Manager {
                 try {
                     img.add(ImageIO.read(files[i]));
                     displayName.add(UtilFunc.filterStr(files[i].getName()));
-                    fileName.add(new Pair<>(files[i].getName().substring(0, files[i].getName().length()-4), i));
+                    map.put(UtilFunc.filterStr(files[i].getName()), i);
                 } catch (IOException e) {
                     System.out.println("Error: " + i);
                     throw new RuntimeException(e);
                 }
             }
         }
-        fileName.sort(Comparator.comparing(Pair::getFirst));
     }
 
     public void draw(Graphics2D g2){};
