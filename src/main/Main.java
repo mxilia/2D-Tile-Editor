@@ -9,15 +9,15 @@ public class Main {
         window.setResizable(false);
         window.setTitle("Tile Editor");
 
-        ImageIcon logoIcon = new ImageIcon("res\\logo.png");
-        window.setIconImage(logoIcon.getImage());
-
         Panel panel = new Panel(window);
         MenuBar menu = new MenuBar(panel, window);
         window.add(panel);
         window.setJMenuBar(menu.menuBar);
-        window.pack();
 
+        ImageIcon logoIcon = new ImageIcon(panel.mainDirectory+"\\logo.png");
+        window.setIconImage(logoIcon.getImage());
+
+        window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
     }
