@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TileEditor:jar">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="TileEditor.jar">
+      <element id="module-output" name="TileEditor" />
+    </root>
+  </artifact>
+</component>
