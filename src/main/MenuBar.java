@@ -402,8 +402,8 @@ public class MenuBar extends UserInterface {
                             return;
                         }
                         try {
-                            if(isObject.isSelected()) p.om.addImgRT(ImageIO.read(selectedFile[0]), UtilFunc.filterStr(selectedFile[0].getName()));
-                            else p.tm.addImgRT(ImageIO.read(selectedFile[0]), UtilFunc.filterStr(selectedFile[0].getName()));
+                            if(isObject.isSelected()) p.om.addImgRT(ImageIO.read(selectedFile[0]), selectedFile[0].getName());
+                            else p.tm.addImgRT(ImageIO.read(selectedFile[0]), selectedFile[0].getName());
                         } catch(IOException ex) {
                             JOptionPane.showMessageDialog(window, "Adding To List Failed");
                             return;

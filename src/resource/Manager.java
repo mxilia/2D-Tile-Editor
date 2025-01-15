@@ -38,8 +38,8 @@ public abstract class Manager {
 
     public void addImgRT(BufferedImage newImg, String str) {
         this.img.add(newImg);
-        this.displayName.add(str);
-        this.map.put(str, this.imgCount);
+        this.displayName.add(UtilFunc.filterStr(str, false));
+        this.map.put(UtilFunc.filterStr(str, true), this.imgCount);
         this.imgCount++;
     }
 
@@ -63,8 +63,8 @@ public abstract class Manager {
             for(int i=0;i<imgCount;i++){
                 try {
                     img.add(ImageIO.read(files[i]));
-                    displayName.add(UtilFunc.filterStr(files[i].getName()));
-                    map.put(UtilFunc.filterStr(files[i].getName()), i);
+                    displayName.add(UtilFunc.filterStr(files[i].getName(), false));
+                    map.put(UtilFunc.filterStr(files[i].getName(), true), i);
                 } catch (IOException e) {
                     System.out.println("Error: " + i);
                     throw new RuntimeException(e);

@@ -27,8 +27,8 @@ public class UtilFunc {
         if((sideBit>>3&1) == 1) g2.fillRect(x, y+height-(thickness-1), width, thickness);
     }
 
-    public static String filterStr(String str) {
-        if(str.length()-4>10) return (str.substring(0, 7) + "...");
+    public static String filterStr(String str, boolean full) {
+        if(str.length()-4>10 && !full) return (str.substring(0, 7) + "...");
         else return str.substring(0, str.length()-4);
     }
 
