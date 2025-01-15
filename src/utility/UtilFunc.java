@@ -21,10 +21,10 @@ public class UtilFunc {
 
     public static void drawBorder(Graphics2D g2, int x, int y, int width, int height, int thickness, int sideBit, Color color) {
         g2.setColor(color);
-        if((sideBit&1) == 1) g2.fillRect(x, y, width, thickness);
-        if((sideBit>>1&1) == 1) g2.fillRect(x, y, thickness, height);
-        if((sideBit>>2&1) == 1) g2.fillRect(x+width-(thickness-1), y, thickness, height);
-        if((sideBit>>3&1) == 1) g2.fillRect(x, y+height-(thickness-1), width, thickness);
+        if((sideBit&1) == 1) g2.fillRect(x, y, width, thickness); sideBit>>=1;
+        if((sideBit&1) == 1) g2.fillRect(x, y, thickness, height); sideBit>>=1;
+        if((sideBit&1) == 1) g2.fillRect(x+width-(thickness-1), y, thickness, height); sideBit>>=1;
+        if((sideBit&1) == 1) g2.fillRect(x, y+height-(thickness-1), width, thickness);
     }
 
     public static String filterStr(String str, boolean full) {
