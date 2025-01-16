@@ -13,3 +13,4 @@
 - The tile id is sorted by file creation date. Make sure to sort it by file creation date in your game as well.
 - You can export all of tiles you upload out in the program so it matches to your game.
 - No layer system.
+- Only works for png.
