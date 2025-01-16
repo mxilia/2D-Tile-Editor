@@ -30,8 +30,8 @@ public class ObjectManager extends Manager {
     public boolean deleteObj(int mouseX, int mouseY) {
         for(int i=objList.size()-1;i>=0;i--){
             ObjScale tuple = objList.get(i);
-            int x = tuple.x/tuple.tileSize*p.map.tileSize+(tuple.x%tuple.tileSize)-p.map.userX;
-            int y = tuple.y/tuple.tileSize*p.map.tileSize+(tuple.y%tuple.tileSize)-p.map.userY;
+            int x = tuple.x/tuple.tileSize*p.map.tileSize+(tuple.x%tuple.tileSize)*p.map.tileSize/tuple.tileSize-p.map.userX;
+            int y = tuple.y/tuple.tileSize*p.map.tileSize+(tuple.y%tuple.tileSize)*p.map.tileSize/tuple.tileSize-p.map.userY;
             int width = p.om.img.get(tuple.id).getWidth()*p.map.userScale;
             int height = p.om.img.get(tuple.id).getHeight()*p.map.userScale;
             if(mouseX-p.map.userX>x && mouseY-p.map.userY>y && mouseX-p.map.userX<x+width && mouseY-p.map.userY<y+height){
