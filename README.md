@@ -11,6 +11,6 @@
 - If you imported a lot of tiles, scroll down on the resource panel to move it up and use it.
 - The file is saved as .txt, you can copy the number and put it in your game.
 - The tile id is sorted by file creation date. Make sure to sort it by file creation date in your game as well.
-- You can export all of tiles you upload out in the program so it matches to your game.
+- You can export all of the tiles you upload out in the program so it matches to your game.
 - No layer system.
 - Only works for png.
