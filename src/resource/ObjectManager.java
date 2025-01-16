@@ -53,8 +53,8 @@ public class ObjectManager extends Manager {
                 invalidId = i;
                 continue;
             }
-            int x = tuple.x/tuple.tileSize*p.map.tileSize+(tuple.x%tuple.tileSize);
-            int y = tuple.y/tuple.tileSize*p.map.tileSize+(tuple.y%tuple.tileSize);
+            int x = tuple.x/tuple.tileSize*p.map.tileSize+(tuple.x%tuple.tileSize)*p.map.tileSize/tuple.tileSize;
+            int y = tuple.y/tuple.tileSize*p.map.tileSize+(tuple.y%tuple.tileSize)*p.map.tileSize/tuple.tileSize;
             int width = p.om.img.get(tuple.id).getWidth()*p.map.userScale;
             int height = p.om.img.get(tuple.id).getHeight()*p.map.userScale;
             if((x+width>=topX && y+height>=topY) || (x+width>=topX && y<=bottomY) || (x>=bottomX && y+height>=topY) || (x>=bottomX && y>=bottomY)){
