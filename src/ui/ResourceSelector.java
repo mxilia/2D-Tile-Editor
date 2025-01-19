@@ -10,8 +10,8 @@ public class ResourceSelector extends UserInterface {
     public int numDisplay = 5;
 
     public boolean searching = false;
-
     public int searchedItem = -1;
+
     public ResourceSelector(Panel p, int x, int y, int width, int height) {
         super(p);
         this.x = x;

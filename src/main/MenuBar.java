@@ -283,7 +283,13 @@ public class MenuBar extends UserInterface {
                     while((current_line = reader.readLine()) != null && okFile){
                         objInfo = current_line.split(" ");
                         if(objInfo.length!=4) continue;
-                        p.om.objList.add(new ObjScale(Integer.parseInt(objInfo[0]), Integer.parseInt(objInfo[1]), Integer.parseInt(objInfo[2]), Integer.parseInt(objInfo[3])));
+                        p.om.objList.add(new ObjScale(Integer.parseInt(objInfo[0]),
+                                                      Integer.parseInt(objInfo[1]),
+                                                      Integer.parseInt(objInfo[2]),
+                                                      p.om.img.get(Integer.parseInt(objInfo[0])).getHeight(),
+                                                      Integer.parseInt(objInfo[3])
+                                                     )
+                                        );
                     }
                     p.om.objList.sort(Comparator.comparing(ObjScale::compare));
                     reader.close();

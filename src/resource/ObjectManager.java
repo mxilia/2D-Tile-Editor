@@ -17,13 +17,13 @@ public class ObjectManager extends Manager {
     }
 
     public void placeObj(int id, int x, int y, int scale) {
-        objList.add(new ObjScale(id, x, y, scale));
+        objList.add(new ObjScale(id, x, y, img.get(id).getHeight(), scale));
         p.actRecord.objPlaced(id, -1, x, y, scale);
         objList.sort(Comparator.comparingInt(ObjScale::compare));
     }
 
     public void placeObj(int id, int x, int y, int scale, boolean noAdd) {
-        objList.add(new ObjScale(id, x, y, scale));
+        objList.add(new ObjScale(id, x, y, img.get(id).getHeight(), scale));
         objList.sort(Comparator.comparingInt(ObjScale::compare));
     }
 
@@ -32,10 +32,10 @@ public class ObjectManager extends Manager {
             ObjScale tuple = objList.get(i);
             int x = tuple.x/tuple.tileSize*p.map.tileSize+(tuple.x%tuple.tileSize)*p.map.tileSize/tuple.tileSize-p.map.userX;
             int y = tuple.y/tuple.tileSize*p.map.tileSize+(tuple.y%tuple.tileSize)*p.map.tileSize/tuple.tileSize-p.map.userY;
-            int width = p.om.img.get(tuple.id).getWidth()*p.map.userScale;
-            int height = p.om.img.get(tuple.id).getHeight()*p.map.userScale;
+            int width = img.get(tuple.id).getWidth()*p.map.userScale;
+            int height = img.get(tuple.id).getHeight()*p.map.userScale;
             if(mouseX-p.map.userX>x && mouseY-p.map.userY>y && mouseX-p.map.userX<x+width && mouseY-p.map.userY<y+height){
-                objList.remove(tuple);
+                objList.remove(i);
                 p.actRecord.objPlaced(tuple.id, -2, tuple.x, tuple.y, tuple.tileSize);
                 return true;
             }
