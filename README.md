@@ -14,3 +14,6 @@
 - You can export all of the tiles you upload out in the program so it matches to your game.
 - No layer system.
 - Only works for png.
+
+*Installation:*
+- Download the .exe file, config and logo.ico (optional) and put the logo.png inside the res folder.
