@@ -16,4 +16,4 @@
 - Only works for png.
 
 *Installation:*
-- Download the .exe file, config and logo.ico (optional) and put the logo.png inside the res folder.
+- Download the .exe file, config, logo.ico (optional) and put the logo.png inside the res folder.
