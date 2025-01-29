@@ -14,7 +14,7 @@ public class Main {
         window.add(panel);
         window.setJMenuBar(menu.menuBar);
 
-        ImageIcon logoIcon = new ImageIcon(panel.mainDirectory+"\\grass.png");
+        ImageIcon logoIcon = new ImageIcon(panel.mainDirectory+"\\res\\logo.png");
         window.setIconImage(logoIcon.getImage());
 
         window.pack();
