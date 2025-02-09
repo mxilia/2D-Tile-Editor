@@ -2,7 +2,7 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\Users\Ravint Kosol\IdeaProjects\TileEditor\download\TileEditor.jar</jar>
+  <jar>C:\Users\Ravint Kosol\IdeaProjects\TileEditor\TileEditor.jar</jar>
   <outfile>C:\Users\Ravint Kosol\IdeaProjects\TileEditor\download\tile_editor.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>

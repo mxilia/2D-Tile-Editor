@@ -286,7 +286,7 @@ public class MenuBar extends UserInterface {
                         p.om.objList.add(new ObjScale(Integer.parseInt(objInfo[0]),
                                                       Integer.parseInt(objInfo[1]),
                                                       Integer.parseInt(objInfo[2]),
-                                                      p.om.img.get(Integer.parseInt(objInfo[0])).getHeight(),
+                                                      p.om.getImg(Integer.parseInt(objInfo[0])).getHeight(),
                                                       Integer.parseInt(objInfo[3])
                                                      )
                                         );

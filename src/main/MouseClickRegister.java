@@ -12,10 +12,7 @@ public class MouseClickRegister implements MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        if(p.map.currentFileDirectory.isEmpty()) return;
-
-    }
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -26,20 +23,22 @@ public class MouseClickRegister implements MouseListener {
             if(x>p.map.x && y>p.map.y && x<p.map.x+p.map.width && y<y+p.map.height){
                 p.motionRegister.pressedX = x;
                 p.motionRegister.pressedY = y;
-                p.motionRegister.pressed = true;
+                p.motionRegister.rightPressed = true;
             }
         }
-        else {
+        else if(e.getButton() == MouseEvent.BUTTON1){
             clickX = x;
             clickY = y;
+            p.motionRegister.leftPressed = true;
         }
     }
-
-
+    
     @Override
     public void mouseReleased(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
+        p.motionRegister.leftPressed = false;
+        p.motionRegister.rightPressed = false;
         if(x>p.resp.resSelect.x && y>p.resp.resSelect.y+p.resp.objSign.height
             && x<p.resp.resSelect.x+p.resp.resSelect.width && y<p.resp.resSelect.y+p.resp.objSign.height+p.resp.height){
             if(p.resp.isObject){
@@ -51,7 +50,6 @@ public class MouseClickRegister implements MouseListener {
                 else p.resp.currentTile = Math.min(p.tm.imgCount, (p.resp.tileUserY +(y-p.resp.resSelect.y-25))/p.resp.resSelect.itemLength+1);
             }
             p.eraserOn = false;
-            p.repaint();
         }
         else if(x>p.resp.tileSign.x && y>p.resp.tileSign.y && x<p.resp.tileSign.x+p.resp.tileSign.width && y<p.resp.tileSign.y+p.resp.tileSign.height){
             if(p.resp.isObject){
@@ -60,7 +58,6 @@ public class MouseClickRegister implements MouseListener {
                 p.resp.searchBar.button.requestFocusInWindow();
             }
             p.resp.isObject = false;
-            p.repaint();
         }
         else if(x>p.resp.objSign.x && y>p.resp.objSign.y && x<p.resp.objSign.x+p.resp.objSign.width && y<p.resp.objSign.y+p.resp.objSign.height){
             if(!p.resp.isObject){
@@ -69,29 +66,18 @@ public class MouseClickRegister implements MouseListener {
                 p.resp.searchBar.button.requestFocusInWindow();
             }
             p.resp.isObject = true;
-            p.repaint();
         }
+        p.repaint();
         if(p.map.currentFileDirectory.isEmpty()) return;
-        p.motionRegister.pressed = false;
+        p.motionRegister.rightPressed = false;
         if(e.getButton() != MouseEvent.BUTTON1) return;
         if(x>p.map.x && y>p.map.y && x<p.map.x+p.map.width && y<y+p.map.height){
             if(Math.abs(clickX-x)>=p.map.tileSize || Math.abs(clickY-y)>=p.map.tileSize) return;
             if(p.resp.isObject){
                 if(!p.map.onObject) return;
                 if(p.resp.currentObj>=0) p.om.placeObj(p.resp.currentObj, p.map.objX, p.map.objY, p.map.tileSize);
-                else if(p.resp.currentObj == -1 && p.om.deleteObj(p.map.objX, p.map.objY)){
-                    p.repaint();
-                    return;
-                }
+                else if(p.resp.currentObj == -1 && p.om.deleteObj(p.map.objX, p.map.objY)) p.repaint();
             }
-            else {
-                if(!p.map.onTile) return;
-                if(p.resp.currentTile != p.map.mapNum[p.map.tileY][p.map.tileX]){
-                    p.actRecord.tilePlaced(p.resp.currentTile, p.map.mapNum[p.map.tileY][p.map.tileX], p.map.tileX, p.map.tileY);
-                }
-                p.map.mapNum[p.map.tileY][p.map.tileX] = p.resp.currentTile;
-            }
-            p.repaint();
         }
     }
 

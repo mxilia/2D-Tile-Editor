@@ -36,6 +36,10 @@ public abstract class Manager {
         loadImg();
     }
 
+    public BufferedImage getImg(int id) {
+        return img.get(Math.min(imgCount-1, id));
+    }
+
     public void addImgRT(BufferedImage newImg, String str) {
         this.img.add(newImg);
         this.displayName.add(UtilFunc.filterStr(str, false));

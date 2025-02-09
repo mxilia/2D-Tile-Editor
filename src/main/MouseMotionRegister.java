@@ -6,17 +6,13 @@ import java.awt.event.MouseMotionAdapter;
 public class MouseMotionRegister extends MouseMotionAdapter {
     Panel p;
     public int pressedX, pressedY;
-    public boolean pressed;
+    public boolean leftPressed, rightPressed;
 
     public MouseMotionRegister(Panel p) {
         this.p = p;
     }
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-        if(p.map.currentFileDirectory.isEmpty()) return;
+    public void moveMouse(int x, int y) {
         if(x+p.map.userX>=0 && y+p.map.userY>=0 && x+p.map.userX<p.map.mapWidth && y+p.map.userY<p.map.mapHeight && !p.resp.isObject){
             p.map.tileX = (x+p.map.userX)/p.map.tileSize;
             p.map.tileY = (y+p.map.userY)/p.map.tileSize;
@@ -30,17 +26,34 @@ public class MouseMotionRegister extends MouseMotionAdapter {
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
-        if(!pressed) return;
+    public void mouseMoved(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        if(x>p.map.x && y>p.map.y && x<p.map.x+p.map.width && y<y+p.map.height){
+        if(p.map.currentFileDirectory.isEmpty()) return;
+        moveMouse(x, y);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        if(p.map.currentFileDirectory.isEmpty()) return;
+        moveMouse(x, y);
+        if(x>p.map.x && y>p.map.y && x<p.map.x+p.map.width && y<y+p.map.height && rightPressed){
             p.map.userX-=x-pressedX;
             p.map.userY-=y-pressedY;
             pressedX = x;
             pressedY = y;
-            p.repaint();
         }
-        else pressed = false;
+        if(x>p.map.x && y>p.map.y && x<p.map.x+p.map.width && y<y+p.map.height && leftPressed){
+           if(!p.resp.isObject){
+                if(!p.map.onTile) return;
+                if(p.resp.currentTile != p.map.mapNum[p.map.tileY][p.map.tileX]){
+                    p.actRecord.tilePlaced(p.resp.currentTile, p.map.mapNum[p.map.tileY][p.map.tileX], p.map.tileX, p.map.tileY);
+                }
+                p.map.mapNum[p.map.tileY][p.map.tileX] = p.resp.currentTile;
+            }
+        }
+        p.repaint();
     }
 }
