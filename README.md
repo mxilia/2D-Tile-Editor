@@ -1,12 +1,12 @@
 # 2D Tile Editor
-- A simple program for creating 2D map with your own tiles. (Suited for top down game development)
+A simple program for creating 2D map with your own tiles. (Suited for top down game development)
 
-*Basic Control:*
+## Basic Control (Todo)
 - Left click to place tile.
 - Right click to move your coordinate.
 - Scroll to zoom in/out.
 
-*Note:*
+## Note (Todo)
 - There's also object. If you want to place object, click on it. The program decides whether you're placing tile or object based on the current resource panel.
 - If you imported a lot of tiles, scroll down on the resource panel to move it up and use it.
 - The file is saved as .txt, you can copy the number and put it in your game.
@@ -15,5 +15,5 @@
 - No layer system.
 - Only works for png.
 
-*Installation:*
+# Installation (Will make a better installation guide later with more info.)
 - Download the .exe file, config, logo.ico (optional) and put the logo.png inside the res folder.
