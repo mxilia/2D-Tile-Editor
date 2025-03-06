@@ -15,5 +15,5 @@ A simple program for creating 2D map with your own tiles. (Suited for top down g
 - No layer system.
 - Only works for png.
 
-# Installation (Will make a better installation guide later with more info.)
+## Installation (Will make a better installation guide later with more info.)
 - Download the .exe file, config, logo.ico (optional) and put the logo.png inside the res folder.
