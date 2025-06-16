@@ -41,7 +41,7 @@ public class Map extends UserInterface {
     }
     public void updateScale(int z) {
         userScale+=z;
-        p.map.userScale = Math.max(1, p.map.userScale);
+        userScale = Math.max(1, userScale);
         tileSize = p.baseTileLength*userScale;
         mapWidth = col*tileSize;
         mapHeight = row*tileSize;

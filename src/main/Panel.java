@@ -8,12 +8,13 @@ import utility.ActivityRecorder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.io.*;
 
 public class Panel extends JPanel {
     JFrame window;
     public String mainDirectory;
     public String resDirectory;
+    public String settingsName = "\\settings.txt";
 
     public final int baseTileLength = 16;
     final int scale = 3;
@@ -55,7 +56,7 @@ public class Panel extends JPanel {
         this.addMouseMotionListener(motionRegister);
     }
 
-    private void setupFolder(){
+    private void setupFolder() {
         mainDirectory = System.getProperty("user.dir");
         resDirectory = mainDirectory+"\\res";
         File folder = new File(resDirectory);
@@ -75,7 +76,25 @@ public class Panel extends JPanel {
         folder = new File(resDirectory+objectDirectory);
         if(!folder.exists()){
             if(!folder.mkdirs()) {
-                JOptionPane.showMessageDialog(window, " Object Not Found\n(Please Restart)");
+                JOptionPane.showMessageDialog(window, "Object Not Found\n(Please Restart)");
+                System.exit(0);
+            }
+        }
+        File settingsFile = new File(resDirectory+settingsName);
+        boolean notExisted = false;
+        try {
+            notExisted = settingsFile.createNewFile();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(window, "Settings Error.\n(Please Restart)");
+            System.exit(0);
+        }
+        if(notExisted){
+            try {
+                FileWriter fileWriter = new FileWriter(resDirectory+settingsName);
+                fileWriter.write("1");
+                fileWriter.close();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(window, "Settings Not Found.\n(Please Restart)");
                 System.exit(0);
             }
         }

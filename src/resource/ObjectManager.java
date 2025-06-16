@@ -5,15 +5,40 @@ import utility.ObjScale;
 import utility.UtilFunc;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class ObjectManager extends Manager {
     public ArrayList<ObjScale> objList = new ArrayList<>();
+    public int incrementValue = 1;
     int invalidId = -1;
 
     public ObjectManager(Panel p, String resType) {
         super(p, resType);
+        readSettings();
+    }
+
+    public void readSettings() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(p.resDirectory+p.settingsName));
+            String currentLine;
+            currentLine = reader.readLine();
+            try {
+                setIncrement(Integer.parseInt(currentLine));
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setIncrement(int val) {
+        incrementValue = val;
     }
 
     public void placeObj(int id, int x, int y, int scale) {

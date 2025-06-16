@@ -2,7 +2,6 @@ package main;
 
 import ui.UserInterface;
 import utility.ObjScale;
-import utility.UtilFunc;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,6 +28,7 @@ public class MenuBar extends UserInterface {
     JMenu file = new JMenu("File");
     JMenu grid = new JMenu("Grid");
     JMenu eraser = new JMenu("Eraser");
+    JMenu adjust = new JMenu("Adjust");
     JMenu undo = new JMenu("Undo");
     JMenu redo = new JMenu("Redo");
 
@@ -45,6 +45,7 @@ public class MenuBar extends UserInterface {
         setupFile();
         setupGrid();
         setupEraser();
+        setupAdjust();
         setupUndoRedo();
         addToPanel();
     }
@@ -83,6 +84,57 @@ public class MenuBar extends UserInterface {
             @Override
             public void mouseExited(MouseEvent e) {}
         });
+    }
+
+    private void setupAdjust() {
+        adjust.setFont(new Font("Arial", Font.BOLD, 11));
+        adjust.setForeground(Color.white);
+        /* Object Increment */
+        JMenuItem objectIncrement  = new JMenuItem("Object Increment");
+        objectIncrement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog dialog = new JDialog(window, "Object increment", true);
+                dialog.setLayout(new FlowLayout());
+                dialog.setSize(250, 100);
+                dialog.setLocationRelativeTo(null);
+
+                JTextField incrementField = new JTextField(10);
+
+                dialog.add(new JLabel("increment: "));
+                dialog.add(incrementField);
+
+                JButton saveButton = new JButton("save");
+                saveButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.dispose();
+                        String incrementString = incrementField.getText();
+                        int incrementVal;
+                        try {
+                            incrementVal = Integer.parseInt(incrementString);
+                            try {
+                                FileWriter fileWriter = new FileWriter(p.resDirectory + p.settingsName);
+                                fileWriter.write(incrementString);
+                                fileWriter.close();
+                                p.om.setIncrement(incrementVal);
+                                JOptionPane.showMessageDialog(window, "Saved.\n");
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(window, "Error Saving.\n(Please try again)");
+                            }
+                        } catch(NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(window, "Not Integer.");
+                        }
+                    }
+                });
+                dialog.add(saveButton);
+                dialog.setVisible(true);
+            }
+        });
+        objectIncrement.setForeground(Color.white);
+        objectIncrement.setBackground(menuItemColor);
+        objectIncrement.setBorder(new EmptyBorder(0, 0, 0, 0));
+        adjust.add(objectIncrement);
     }
 
     private void setupEraser() {
@@ -211,7 +263,6 @@ public class MenuBar extends UserInterface {
                                 JOptionPane.showMessageDialog(window, "An Error Occurred");
                                 return;
                             }
-
                             try {
                                 FileWriter fileWriter = new FileWriter(mapFile, true);
                                 fileWriter.write(row + " " + col + "\n");
@@ -628,6 +679,7 @@ public class MenuBar extends UserInterface {
         menuBar.add(file);
         menuBar.add(grid);
         menuBar.add(eraser);
+        menuBar.add(adjust);
         menuBar.add(undo);
         menuBar.add(redo);
     }
