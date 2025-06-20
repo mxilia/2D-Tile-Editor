@@ -19,6 +19,7 @@ public class MouseWheelRegister implements MouseWheelListener {
             if(p.map.currentFileDirectory.isEmpty()) return;
             if(notches < 0) p.map.updateScale(1);
             else p.map.updateScale(-1);
+            p.map.updateObjPos(x, y);
             p.repaint();
         }
         if(x>p.resp.resSelect.x && y>p.resp.resSelect.y+p.resp.objSign.height

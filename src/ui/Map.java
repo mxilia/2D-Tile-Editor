@@ -39,6 +39,12 @@ public class Map extends UserInterface {
         userY = 0;
         updateScale(0);
     }
+
+    public void updateObjPos(int mouseX, int mouseY) {
+        objX = (mouseX+userX)/(p.om.incrementValue*userScale)*p.om.incrementValue*userScale;
+        objY = (mouseY+userY)/(p.om.incrementValue*userScale)*p.om.incrementValue*userScale;
+    }
+
     public void updateScale(int z) {
         userScale+=z;
         userScale = Math.max(1, userScale);
@@ -47,12 +53,30 @@ public class Map extends UserInterface {
         mapHeight = row*tileSize;
     }
 
+    void drawGrid(Graphics2D g2) {
+        int tileSize = p.map.tileSize;
+        int topX = p.map.userX, topY = p.map.userY;
+        int bottomX = topX+p.tm.editorWidth, bottomY = topY+p.tm.editorHeight;
+        int pixelTopX = Math.max(0, topX/tileSize), pixelTopY = Math.max(0, topY/tileSize);
+        int pixelBottomX = Math.min(p.map.col, bottomX/tileSize+1), pixelBottomY = Math.min(p.map.row, bottomY/tileSize+1);
+        g2.setColor(Color.white);
+        if(p.map.gridOn){
+            for(int i=pixelTopY;i<=pixelBottomY;i++){
+                for(int j=pixelTopX;j<=pixelBottomX;j++){
+                    if(i<pixelBottomY) g2.fillRect(j*tileSize-topX, i*tileSize-topY, 1, tileSize);
+                    if(j<pixelBottomX) g2.fillRect(j*tileSize-topX, i*tileSize-topY, tileSize, 1);
+                }
+            }
+        }
+    }
+
     public void draw(Graphics2D g2) {
         g2.setColor(Color.gray);
         g2.fillRect(x, y, width, height);
         if(!currentFileDirectory.isEmpty()){
             p.tm.draw(g2);
             p.om.draw(g2);
+            drawGrid(g2);
         }
     }
 }

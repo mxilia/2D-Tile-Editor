@@ -29,17 +29,8 @@ public class TileManager extends Manager{
                             );
             }
         }
-        g2.setColor(Color.white);
-        if(p.map.gridOn){
-            for(int i=pixelTopY;i<=pixelBottomY;i++){
-                for(int j=pixelTopX;j<=pixelBottomX;j++){
-                    if(i<pixelBottomY) g2.fillRect(j*tileSize-topX, i*tileSize-topY, 1, tileSize);
-                    if(j<pixelBottomX) g2.fillRect(j*tileSize-topX, i*tileSize-topY, tileSize, 1);
-                }
-            }
-        }
         if(p.map.onTile){
-            if(p.resp.currentTile >0){
+            if(p.resp.currentTile>0){
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
                 g2.drawImage(p.tm.img.get(p.resp.currentTile -1),
                           p.map.tileX*tileSize-topX,
