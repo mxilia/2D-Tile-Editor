@@ -29,4 +29,4 @@ bin/
 .DS_Store
 
 ### Mine ###
-res/data/maps.txt
+/res/data/maps.txt
