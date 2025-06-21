@@ -1,5 +1,5 @@
 - New zoom in method.
-- Save last map.
+- Save last map. (Done)
 - Full screen.
-- Maps tab.
+- Maps tab. (Might cancel)
 - Guide/info menu.

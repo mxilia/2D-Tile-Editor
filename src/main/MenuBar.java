@@ -114,7 +114,7 @@ public class MenuBar extends UserInterface {
                         try {
                             incrementVal = Integer.parseInt(incrementString);
                             try {
-                                FileWriter fileWriter = new FileWriter(p.resDirectory + p.settingsName);
+                                FileWriter fileWriter = new FileWriter(p.resDirectory+p.dataDirectory+p.settingsName);
                                 fileWriter.write(incrementString);
                                 fileWriter.close();
                                 p.om.setIncrement(incrementVal);
@@ -252,8 +252,8 @@ public class MenuBar extends UserInterface {
                                 return;
                             }
                             if(selectedDirectory[0] == null) return;
-
-                            File mapFile = new File(directoryLabel[0].getText()+"\\"+name+".txt");
+                            String newMapDir = directoryLabel[0].getText()+"\\"+name+".txt";
+                            File mapFile = new File(newMapDir);
                             try {
                                 if(!mapFile.createNewFile()){
                                     JOptionPane.showMessageDialog(window, "File Already Existed");
@@ -279,6 +279,7 @@ public class MenuBar extends UserInterface {
                                 JOptionPane.showMessageDialog(window, "An Error Occurred");
                                 return;
                             }
+                            p.map.openMap(newMapDir);
                             dialog.dispose();
                         } catch(NumberFormatException ex) {
                             JOptionPane.showMessageDialog(window, "Not Integer.");
@@ -304,64 +305,7 @@ public class MenuBar extends UserInterface {
                 int result = fileChooser.showOpenDialog(null);
                 if(result != JFileChooser.APPROVE_OPTION) return;
 
-                boolean okFile = true;
-                int row = 0, col = 0;
-                p.map.currentFileDirectory = fileChooser.getSelectedFile().getAbsolutePath();
-                try {
-                    BufferedReader reader = new BufferedReader(new FileReader(p.map.currentFileDirectory));
-                    String current_line;
-                    current_line = reader.readLine();
-                    String[] numbers = current_line.split(" ");
-                    int fileRow = Integer.parseInt(numbers[0]);
-                    int fileCol = Integer.parseInt(numbers[1]);
-                    while((current_line = reader.readLine()) != null){
-                        if(current_line.equals("Obj:")) break;
-                        numbers = current_line.split(" ");
-                        col = 0;
-                        for(String number : numbers){
-                            p.map.mapNum[row][col] = Integer.parseInt(number);
-                            col++;
-                        }
-                        if(col != fileCol) {
-                            okFile = false;
-                            break;
-                        }
-                        row++;
-                    }
-                    if(row != fileRow) okFile = false;
-                    if(okFile) p.om.objList.clear();
-                    String[] objInfo;
-                    while((current_line = reader.readLine()) != null && okFile){
-                        objInfo = current_line.split(" ");
-                        if(objInfo.length!=4) continue;
-                        p.om.objList.add(new ObjScale(Integer.parseInt(objInfo[0]),
-                                                      Integer.parseInt(objInfo[1]),
-                                                      Integer.parseInt(objInfo[2]),
-                                                      p.om.getImg(Integer.parseInt(objInfo[0])).getHeight(),
-                                                      Integer.parseInt(objInfo[3])
-                                                     )
-                                        );
-                    }
-                    p.om.objList.sort(Comparator.comparing(ObjScale::compare));
-                    reader.close();
-                } catch (FileNotFoundException ex) {
-                    JOptionPane.showMessageDialog(window, "File Not Found");
-                    okFile = false;
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(window, "An Error Occurred");
-                    okFile = false;
-                }
-                if(okFile){
-                    p.map.changeMap(row, col);
-                    p.actRecord.clear();
-                    p.repaint();
-                }
-                else {
-                    JOptionPane.showMessageDialog(window, "Invalid Map");
-                    p.map.mapNum = new int[p.map.maxRow][p.map.maxCol];
-                    p.map.currentFileDirectory = "";
-                    p.om.objList.clear();
-                }
+                p.map.openMap(fileChooser.getSelectedFile().getAbsolutePath());
             }
         });
         /* Save */
@@ -369,28 +313,7 @@ public class MenuBar extends UserInterface {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(p.map.currentFileDirectory.isEmpty()) return;
-                try {
-                    FileWriter fileWriter = new FileWriter(p.map.currentFileDirectory);
-                    fileWriter.write(p.map.row + " " + p.map.col + "\n");
-                    for(int i=0;i<p.map.row;i++){
-                        for(int j=0;j<p.map.col;j++){
-                            fileWriter.write(String.valueOf(p.map.mapNum[i][j]));
-                            if(j!=p.map.col-1) fileWriter.write(" ");
-                        }
-                        fileWriter.write("\n");
-                    }
-                    fileWriter.write("Obj:");
-                    for(int i=0;i<p.om.objList.size();i++){
-                        fileWriter.write("\n");
-                        ObjScale tuple = p.om.objList.get(i);
-                        fileWriter.write(tuple.id + " " + tuple.x + " " + tuple.y + " " + tuple.tileSize);
-                    }
-                    fileWriter.close();
-                    JOptionPane.showMessageDialog(window, "Saved");
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(window, "An Error Occurred");
-                }
+                p.map.saveMap();
             }
         });
         /* Upload */

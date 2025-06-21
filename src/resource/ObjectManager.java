@@ -22,7 +22,7 @@ public class ObjectManager extends Manager {
 
     public void readSettings() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(p.resDirectory+p.settingsName));
+            BufferedReader reader = new BufferedReader(new FileReader(p.resDirectory+p.dataDirectory+p.settingsName));
             String currentLine;
             currentLine = reader.readLine();
             try {

@@ -11,10 +11,12 @@ import java.awt.*;
 import java.io.*;
 
 public class Panel extends JPanel {
-    JFrame window;
+    public JFrame window;
     public String mainDirectory;
     public String resDirectory;
-    public String settingsName = "\\settings.txt";
+    public final String dataDirectory = "\\data";
+    public final String settingsName = "\\settings.txt";
+    public final String mapsName = "\\maps.txt";
 
     public final int baseTileLength = 16;
     final int scale = 3;
@@ -35,17 +37,19 @@ public class Panel extends JPanel {
     public final String tileDirectory = "\\tiles";
     public final String objectDirectory = "\\objects";
 
-    public ResourcePanel resp = new ResourcePanel(this);
-    public Map map = new Map(this);
+    public ResourcePanel resp;
+    public Map map;
 
     public boolean eraserOn = false;
 
     public Panel(JFrame window) {
         this.window = window;
         setupFolder();
+        resp = new ResourcePanel(this);
         actRecord = new ActivityRecorder(this);
         tm = new TileManager(this, "tiles");
         om = new ObjectManager(this, "objects");
+        map = new Map(this);
         this.setPreferredSize(new Dimension(width, height));
         this.setLayout(null);
         this.setBackground(Color.darkGray);
@@ -56,53 +60,50 @@ public class Panel extends JPanel {
         this.addMouseMotionListener(motionRegister);
     }
 
-    private void setupFolder() {
-        mainDirectory = System.getProperty("user.dir");
-        resDirectory = mainDirectory+"\\res";
-        File folder = new File(resDirectory);
+    public void createFolder(String dir, String errorMsg) {
+        File folder = new File(dir);
         if(!folder.exists()){
             if(!folder.mkdirs()) {
-                JOptionPane.showMessageDialog(window, "Resource Not Found\n(Please Restart)");
-                System.exit(0);
-            }
-        }
-        folder = new File(resDirectory+tileDirectory);
-        if(!folder.exists()){
-            if(!folder.mkdirs()) {
-                JOptionPane.showMessageDialog(window, "Tile Folder Not Found\n(Please Restart)");
-                System.exit(0);
-            }
-        }
-        folder = new File(resDirectory+objectDirectory);
-        if(!folder.exists()){
-            if(!folder.mkdirs()) {
-                JOptionPane.showMessageDialog(window, "Object Not Found\n(Please Restart)");
-                System.exit(0);
-            }
-        }
-        File settingsFile = new File(resDirectory+settingsName);
-        boolean notExisted = false;
-        try {
-            notExisted = settingsFile.createNewFile();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(window, "Settings Error.\n(Please Restart)");
-            System.exit(0);
-        }
-        if(notExisted){
-            try {
-                FileWriter fileWriter = new FileWriter(resDirectory+settingsName);
-                fileWriter.write("1");
-                fileWriter.close();
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(window, "Settings Not Found.\n(Please Restart)");
+                JOptionPane.showMessageDialog(window, errorMsg);
                 System.exit(0);
             }
         }
     }
 
+    public void createFile(String dir, String fileName, String defaultVal) {
+        File file = new File(dir);
+        boolean notExisted = false;
+        try {
+            notExisted = file.createNewFile();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(window, fileName + " Error.\n(Please Restart)");
+            System.exit(0);
+        }
+        if(notExisted){
+            try {
+                FileWriter fileWriter = new FileWriter(dir);
+                fileWriter.write(defaultVal);
+                fileWriter.close();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(window, fileName + " Not Found.\n(Please Restart)");
+                System.exit(0);
+            }
+        }
+    }
+
+    private void setupFolder() {
+        mainDirectory = System.getProperty("user.dir");
+        resDirectory = mainDirectory+"\\res";
+        createFolder(resDirectory, "Resource Not Found\n(Please Restart)");
+        createFolder(resDirectory+tileDirectory, "Tile Folder Not Found\n(Please Restart)");
+        createFolder(resDirectory+objectDirectory, "Object Not Found\n(Please Restart)");
+        createFolder(resDirectory+dataDirectory, "Data Not Found\n(Please Restart)");
+        createFile(resDirectory+dataDirectory+settingsName, "Settings", "1");
+        createFile(resDirectory+dataDirectory+mapsName, "Maps", "");
+    }
+
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-
         map.draw(g2);
         resp.draw(g2);
     }

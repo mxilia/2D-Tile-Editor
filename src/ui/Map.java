@@ -1,8 +1,12 @@
 package ui;
 
 import main.Panel;
+import utility.ObjScale;
 
+import javax.swing.*;
 import java.awt.*;
+import java.io.*;
+import java.util.Comparator;
 
 public class Map extends UserInterface {
     final public int maxCol = 500, maxRow = 500;
@@ -20,6 +24,19 @@ public class Map extends UserInterface {
     public Map(Panel p) {
         super(p);
         setDefaultValue();
+        readMaps();
+    }
+
+    void readMaps() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(p.resDirectory+p.dataDirectory+p.mapsName));
+            String currentLine;
+            currentLine = reader.readLine();
+            if(currentLine!=null) openMap(currentLine);
+            reader.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     void setDefaultValue() {
@@ -51,6 +68,105 @@ public class Map extends UserInterface {
         tileSize = p.baseTileLength*userScale;
         mapWidth = col*tileSize;
         mapHeight = row*tileSize;
+    }
+
+    public void updateMaps() {
+        try {
+            FileWriter fileWriter = new FileWriter(p.resDirectory+p.dataDirectory+p.mapsName);
+            fileWriter.write(currentFileDirectory);
+            fileWriter.close();
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(p.window, "Maps File Not Found");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void openMap(String dir) {
+        boolean okFile = true;
+        int row = 0, col = 0;
+        currentFileDirectory = dir;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(currentFileDirectory));
+            String current_line;
+            current_line = reader.readLine();
+            String[] numbers = current_line.split(" ");
+            int fileRow = Integer.parseInt(numbers[0]);
+            int fileCol = Integer.parseInt(numbers[1]);
+            while((current_line = reader.readLine()) != null){
+                if(current_line.equals("Obj:")) break;
+                numbers = current_line.split(" ");
+                col = 0;
+                for(String number : numbers){
+                    mapNum[row][col] = Integer.parseInt(number);
+                    col++;
+                }
+                if(col != fileCol) {
+                    okFile = false;
+                    break;
+                }
+                row++;
+            }
+            if(row != fileRow) okFile = false;
+            if(okFile) p.om.objList.clear();
+            String[] objInfo;
+            while((current_line = reader.readLine()) != null && okFile){
+                objInfo = current_line.split(" ");
+                if(objInfo.length!=4) continue;
+                p.om.objList.add(new ObjScale(Integer.parseInt(objInfo[0]),
+                                Integer.parseInt(objInfo[1]),
+                                Integer.parseInt(objInfo[2]),
+                                p.om.getImg(Integer.parseInt(objInfo[0])).getHeight(),
+                                Integer.parseInt(objInfo[3])
+                        )
+                );
+            }
+            p.om.objList.sort(Comparator.comparing(ObjScale::compare));
+            reader.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(p.window, "File Not Found");
+            okFile = false;
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(p.window, "An Error Occurred");
+            okFile = false;
+        }
+        if(okFile){
+            changeMap(row, col);
+            updateMaps();
+            p.actRecord.clear();
+            p.repaint();
+        }
+        else {
+            JOptionPane.showMessageDialog(p.window, "Invalid Map");
+            mapNum = new int[maxRow][maxCol];
+            currentFileDirectory = "";
+            p.om.objList.clear();
+        }
+    }
+
+    public void saveMap() {
+        if(currentFileDirectory.isEmpty()) return;
+        try {
+            FileWriter fileWriter = new FileWriter(currentFileDirectory);
+            fileWriter.write(row + " " + col + "\n");
+            for(int i=0;i<row;i++){
+                for(int j=0;j<col;j++){
+                    fileWriter.write(String.valueOf(mapNum[i][j]));
+                    if(j!=col-1) fileWriter.write(" ");
+                }
+                fileWriter.write("\n");
+            }
+            fileWriter.write("Obj:");
+            for(int i=0;i<p.om.objList.size();i++){
+                fileWriter.write("\n");
+                ObjScale tuple = p.om.objList.get(i);
+                fileWriter.write(tuple.id + " " + tuple.x + " " + tuple.y + " " + tuple.tileSize);
+            }
+            fileWriter.close();
+            JOptionPane.showMessageDialog(p.window, "Saved");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(p.window, "An Error Occurred");
+        }
     }
 
     void drawGrid(Graphics2D g2) {
