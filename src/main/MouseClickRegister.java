@@ -76,7 +76,7 @@ public class MouseClickRegister implements MouseListener {
             if(p.resp.isObject){
                 if(!p.map.onObject) return;
                 if(p.resp.currentObj>=0) p.om.placeObj(p.resp.currentObj, p.map.objX, p.map.objY, p.map.tileSize);
-                else if(p.resp.currentObj == -1 && p.om.deleteObj(p.map.objX, p.map.objY)){
+                else if(p.resp.currentObj == -1 && p.om.deleteObj(x, y)){
                     p.repaint();
                     return;
                 }

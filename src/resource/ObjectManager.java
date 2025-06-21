@@ -57,7 +57,7 @@ public class ObjectManager extends Manager {
             int y = tuple.y/tuple.tileSize*p.map.tileSize+(tuple.y%tuple.tileSize)*p.map.tileSize/tuple.tileSize-p.map.userY;
             int width = img.get(tuple.id).getWidth()*p.map.userScale;
             int height = img.get(tuple.id).getHeight()*p.map.userScale;
-            if(mouseX-p.map.userX>x && mouseY-p.map.userY>y && mouseX-p.map.userX<x+width && mouseY-p.map.userY<y+height){
+            if(mouseX>x && mouseY>y && mouseX<x+width && mouseY<y+height){
                 objList.remove(i);
                 p.actRecord.objPlaced(tuple.id, -2, tuple.x, tuple.y, tuple.tileSize);
                 return true;
