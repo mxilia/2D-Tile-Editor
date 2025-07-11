@@ -15,6 +15,7 @@ public class MouseWheelRegister implements MouseWheelListener {
         int notches = e.getWheelRotation();  // Number of notches the wheel has moved
         int x = e.getX();
         int y = e.getY();
+        // Zoom in map
         if(x>p.map.x && y>p.map.y && x<p.map.x+p.map.width && y<y+p.map.height){
             if(p.map.currentFileDirectory.isEmpty()) return;
             if(notches < 0) p.map.updateScale(1);
@@ -22,6 +23,7 @@ public class MouseWheelRegister implements MouseWheelListener {
             p.map.updateObjPos(x, y);
             p.repaint();
         }
+        // Scrolling Tab
         if(x>p.resp.resSelect.x && y>p.resp.resSelect.y+p.resp.objSign.height
            && x<p.resp.resSelect.x+p.resp.resSelect.width && y<p.resp.resSelect.y+p.resp.objSign.height+p.resp.height){
             if(p.resp.isObject){

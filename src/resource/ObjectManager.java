@@ -28,7 +28,7 @@ public class ObjectManager extends Manager {
             try {
                 setIncrement(Integer.parseInt(currentLine));
             } catch (NumberFormatException e) {
-                throw new RuntimeException(e);
+                setIncrement(1);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -36,7 +36,7 @@ public class ObjectManager extends Manager {
     }
 
     public void setIncrement(int val) {
-        incrementValue = val;
+        incrementValue = Math.max(1, val);
     }
 
     public void placeObj(int id, int x, int y, int scale) {

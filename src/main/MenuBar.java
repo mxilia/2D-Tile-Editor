@@ -1,7 +1,6 @@
 package main;
 
 import ui.UserInterface;
-import utility.ObjScale;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,7 +18,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.util.Comparator;
 
 public class MenuBar extends UserInterface {
     JFrame window;
@@ -115,7 +113,7 @@ public class MenuBar extends UserInterface {
                             incrementVal = Integer.parseInt(incrementString);
                             try {
                                 FileWriter fileWriter = new FileWriter(p.resDirectory+p.dataDirectory+p.settingsName);
-                                fileWriter.write(incrementString);
+                                fileWriter.write(String.valueOf(Math.max(1, incrementVal)));
                                 fileWriter.close();
                                 p.om.setIncrement(incrementVal);
                                 JOptionPane.showMessageDialog(window, "Saved.\n");

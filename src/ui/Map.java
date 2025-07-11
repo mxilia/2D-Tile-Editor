@@ -63,11 +63,12 @@ public class Map extends UserInterface {
     }
 
     public void updateScale(int z) {
-        userScale+=z;
-        userScale = Math.max(1, userScale);
-        tileSize = p.baseTileLength*userScale;
-        mapWidth = col*tileSize;
-        mapHeight = row*tileSize;
+        if(userScale+z>=1){
+            userScale+=z;
+            tileSize = p.baseTileLength*userScale;
+            mapWidth = col*tileSize;
+            mapHeight = row*tileSize;
+        }
     }
 
     public void updateMaps() {

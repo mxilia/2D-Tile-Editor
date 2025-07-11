@@ -5,7 +5,7 @@ import utility.UtilFunc;
 
 import java.awt.*;
 
-public class TileManager extends Manager{
+public class TileManager extends Manager {
 
     public TileManager(Panel p, String resType) {
         super(p, resType);
